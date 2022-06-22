@@ -4,10 +4,8 @@ from numpy import asarray
 import tensorflow as tf
 import streamlit as st
 
-class_names = ['Potato___Early_blight',
-               'Potato___Late_blight', 'Potato___healthy']
-
-# img_path = 'training/PlantVillage/Potato___healthy/0b3e5032-8ae8-49ac-8157-a1cac3df01dd___RS_HL 1817.JPG'
+class_names = ['Early Blight Detected',
+               'Late Blight Detected', 'Healthy Plant']
 
 
 def predict(model, img):
@@ -25,7 +23,7 @@ if __name__ == '__main__':
     model = tf.keras.models.load_model('potatoes.h5')
 
     img_data = st.file_uploader(
-        label='Upload an image to test', type=['png', 'jpg', 'jpeg'])
+        label='Upload plant leaf image to test : ', type=['png', 'jpg', 'jpeg'])
 
     if img_data:
         st.write("Filename: ", img_data.name)
@@ -34,11 +32,9 @@ if __name__ == '__main__':
         uploaded_image = Image.open(img_data)
         st.image(uploaded_image)
 
-        # img = Image.open(uploaded_image)
         resized_img = uploaded_image.resize((256, 256))
         numpydata = asarray(resized_img)
 
         predicted_class, confidence = predict(model, numpydata)
-        # print(predicted_class, confidence)
-        st.write("Predicted Class : ", predicted_class)
-        st.write("Confidence : ", confidence)
+        st.write("Prediction : ", predicted_class)
+        st.write("Prediction Confidence : ", confidence)
